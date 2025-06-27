@@ -5,20 +5,20 @@ export component Osd {
   property <OsdState> state: OsdGlobal.state;
 
   out property <length> render-x: OsdGlobal.is-notch 
-    ? path.x - path-height * 0.5px
+    ? path.x - path-height * 0.4px
     : OsdGlobal.is-notch-open
     ? path.x - path-height * 0.75px
-    : path.x - path-height * 1.5px;
+    : path.x - path-height * 1.65px - 2px;
   out property <length> render-width: OsdGlobal.is-notch 
-    ? path.width + path-height * 1px
+    ? path.width + path-height * 0.8px
     : OsdGlobal.is-notch-open
     ? path.width + path-height * 1.5px
-    : path.width + path-height * 3px;
+    : path.width + path-height * 3.3px + 4px;
   out property <length> render-height: OsdGlobal.is-notch 
     ? path.height / 2 + 2px
     : OsdGlobal.is-notch-open
     ? path.height / 2 - 2px
-    : path.height / 2;
+    : path.height / 2 + 2px;
 
   in property <duration> duration: 1s;
 
@@ -212,11 +212,22 @@ export component Osd {
     }
 
     Rectangle {
+      private property <length> top-radius: OsdGlobal.is-island ? 65px : 0px;
+      private property <length> bottom-radius: OsdGlobal.is-notch 
+        ? 8px 
+        : OsdGlobal.is-notch-open 
+        ? 16px 
+        : 65px;
+
       x: render-x;
       y: path.y + path.height / 2;
 
       width: render-width;
       height: render-height;
+      border-bottom-left-radius: bottom-radius;
+      border-bottom-right-radius: bottom-radius;
+      border-top-left-radius: top-radius;
+      border-top-right-radius: top-radius;
 
       clip: true;
       // background: #F003;
@@ -225,3 +236,4 @@ export component Osd {
     }
   }
 }
+
