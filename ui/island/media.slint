@@ -18,14 +18,99 @@ export global OsdMediaManager {
   }
 }
 
+component MediaBar {   
+  in-out property <float> progress: 0.5;
+
+  in property <string> current-time: "";
+  in property <string> max-time: "";
+
+  Text {
+    text: current-time;
+    color: OsdGlobal.foreground;
+    font-size: 9px;
+    x: 0px;
+    y: 5px;
+  }
+
+  Text {
+    text: max-time;
+    color: OsdGlobal.foreground;
+    font-size: 9px;
+    x: root.width - self.width;
+    y: 5px;
+  }
+
+  Rectangle {
+    x: 0px;
+    y: 0px;
+
+    width: root.width;
+    height: 2px;
+    border-radius: 2px;
+
+    background: OsdGlobal.foreground;
+  }
+
+  Rectangle {
+    x: 0px;
+    y: 0px;
+
+    width: root.width * progress;
+    height: 2px;
+    border-radius: 2px;
+
+    background: @linear-gradient(45deg, OsdGlobal.foreground 0%, OsdGlobal.accent 50%, OsdGlobal.accent 100%);
+  }
+
+  Rectangle {
+    property <length> size: ta.has-hover ? 9px : 0px;
+
+    x: root.width * progress - self.width / 2;
+    y: -self.width / 3;
+
+    width: size;
+    height: size;
+    border-radius: 5px;
+
+    animate width, height {
+      duration: 50ms;
+    }
+
+    background: OsdGlobal.accent;
+    border-color: #FFF;
+    border-width: 1px;
+  }
+
+  Rectangle {
+    x: 0px;
+    y: 0px - self.height / 3;
+    width: root.width;
+    height: 7px;
+
+    ta := TouchArea {
+      clicked => {
+        root.progress = max(0, min(parent.width, self.mouse-x)) / parent.width;
+      }
+
+      moved => {
+        if (self.pressed) {
+          root.progress = max(0, min(parent.width, self.mouse-x)) / parent.width;
+        }
+      }
+    }
+  }
+}
+
 component OsdMediaInner inherits IslandWidget {
   Rectangle {
-    x: 10px;
-    y: -10px;
+    x: max(0, root.width / root.min-width) * 100px - 85px;
+    y: root.height / 2 - self.height / 2;
 
     width: 90px;
     height: 90px;
     border-radius: 70px;
+    border-color: OsdGlobal.foreground;
+    border-width: 2px;
 
     clip: true;
 
@@ -37,54 +122,70 @@ component OsdMediaInner inherits IslandWidget {
     }
   }
 
-  Text {
-    x: 120px;
-    y: 0px;
-    text: "Song name";
-    font-size: 16px;
-    font-weight: 600;
-    color: OsdGlobal.foreground;
+  Rectangle {
+    x: ((root.width - self.width - 70px) + (120px)) / 2;
+    y: root.height - self.height - 70px;
+    width: 250px;
+    height: 35px;
+
+    Text {
+      x: 0px;
+      y: 0px;
+      text: "Song name";
+      font-size: 16px;
+      font-weight: 600;
+      color: OsdGlobal.foreground;
+    }
+
+    Text {
+      x: 0px;
+      y: 19px;
+      text: "Artist";
+      font-size: 12px;
+      font-weight: 600;
+      color: OsdGlobal.accent;
+    }
   }
 
-  Rectangle {
-    x: 120px;
-    y: 45px;
+  MediaBar {
+    x: ((root.width - self.width - 70px) + (120px)) / 2;
+    y: max(0, root.height / root.target-height) * 50px + 40px;
 
     width: 250px;
-    height: 2px;
-    border-radius: 2px;
 
-    background: OsdGlobal.foreground;
+    current-time: "00:30";
+    max-time: "01:00";
   }
 
-  Rectangle {
-    x: 120px;
-    y: 45px;
+  HorizontalLayout {
+    x: ((root.width - self.width - 70px) + (120px)) / 2;
+    y: root.height - self.height + 10px;
 
-    width: 150px;
-    height: 2px;
-    border-radius: 2px;
+    width: 200px;
 
-    background: #F00;
-  }
+    alignment: space-between;
 
-  Rectangle {
-    x: 120px + 150px - 2px;
-    y: 45px - 2px;
+    Image {
+      source: @image-url("../assets/play-back.svg");
+      width: 24px;
+      colorize: OsdGlobal.foreground;
+    }
 
-    width: 5px;
-    height: 5px;
-    border-radius: 5px;
+    Image {
+      source: @image-url("../assets/play.svg");
+      width: 24px;
+      colorize: OsdGlobal.foreground;
+    }
 
-    background: #F00;
-    border-color: #FFF;
-    border-width: 1px;
+    Image {
+      source: @image-url("../assets/play-forward.svg");
+      width: 24px;
+      colorize: OsdGlobal.foreground;
+    }
   }
 }
 
 export component OsdMedia inherits IslandWidget {
-  if OsdMediaManager.shown: OsdMediaInner {
-    x: -10px;
-    y: 15px;
-  }
+  if OsdMediaManager.shown: OsdMediaInner { }
 }
+

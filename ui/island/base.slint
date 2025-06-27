@@ -1,9 +1,13 @@
 export component IslandWidget inherits Rectangle {
-  x: 10px;
-  y: 10px;
+  x: 0px;
+  y: 0px;
 
-  width: 360px;
-  height: 100px;
+  min-width: 437px;
+  preferred-width: 100%;
+  min-height: 10px;
+  preferred-height: 100%;
+
+  out property <length> target-height: 120px;
 
   @children
 }
