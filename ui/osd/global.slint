@@ -1,0 +1,30 @@
+import { OsdState, OsdConfig } from "./state.slint";
+
+export global OsdGlobal {
+  in-out property <OsdConfig> config: {
+    name: "media",
+    background: #000,
+    foreground: #FFF,
+    state: OsdState.Island,
+  };
+
+  out property <brush> background: config.background;
+  out property <brush> foreground: config.foreground;
+  out property <OsdState> state: config.state;
+
+  out property <bool> is-notch: state == OsdState.Notch;
+  out property <bool> is-notch-open: state == OsdState.NotchOpen;
+  out property <bool> is-island: state == OsdState.Island;
+
+  out property <duration> animation-start: animation-tick();
+  out property <bool> old-island: is-island;
+
+  out property <string> widget: config.name;
+
+  public function set-widget(new-config: OsdConfig) {
+    animation-start = animation-tick();
+    old-island = is-island;
+
+    config = new-config;
+  }
+}

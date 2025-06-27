@@ -1,0 +1,223 @@
+import { OsdState } from "osd/state.slint";
+import { OsdGlobal } from "osd/global.slint";
+
+export component Osd {
+  property <OsdState> state: OsdGlobal.state;
+
+  out property <length> render-x: OsdGlobal.is-notch 
+    ? path.x - path-height * 0.5px
+    : OsdGlobal.is-notch-open
+    ? path.x - path-height * 0.75px
+    : path.x - path-height * 1.5px;
+  out property <length> render-width: OsdGlobal.is-notch 
+    ? path.width + path-height * 1px
+    : OsdGlobal.is-notch-open
+    ? path.width + path-height * 1.5px
+    : path.width + path-height * 3px;
+  out property <length> render-height: OsdGlobal.is-notch 
+    ? path.height / 2 + 2px
+    : OsdGlobal.is-notch-open
+    ? path.height / 2 - 2px
+    : path.height / 2;
+
+  in property <duration> duration: 1s;
+
+  property <float> path-height: 20;
+  property <float> path-unit: path-height / 2;
+  property <float> path-curve: path-height * (3 / 4);
+
+  private property <duration> animation-start: OsdGlobal.animation-start;
+  private property <float> animation-frame: min(animation-tick() - animation-start, self.duration / 2) / (self.duration / 2);
+
+  private property <bool> old-island: OsdGlobal.old-island;
+  private property <bool> is-island: OsdGlobal.is-island;
+
+  states [
+    notch when OsdGlobal.is-notch: {
+      path-height: 20;
+
+      in {
+        animate path-height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+
+        animate path.width, path.height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+      }
+
+      out {
+        animate path-height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+
+        animate path.width, path.height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+      }
+    }
+  ]
+
+  states [
+    notch-open when OsdGlobal.is-notch-open: {
+      path-height: 30;
+
+      path.width: 200px;
+      path.height: 125px;
+    }
+  ]
+
+  states [
+    view-island when OsdGlobal.is-island: {
+      pos.y: 10px;
+      path-height: 40;
+
+      path.width: 300px;
+      path.height: 235px;
+
+      in {
+        animate pos.y {
+          duration: root.duration;
+          easing: ease-out-back;
+        }
+        animate path-height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+
+        animate path.width, path.height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+      }
+
+      out {
+        animate pos.y {
+          duration: root.duration / 6;
+          easing: ease-out;
+        }
+
+        animate path-height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+
+        animate path.width, path.height {
+           duration: root.duration;
+           easing: ease-out-back;
+        }
+      }
+    }
+  ]
+
+  width: 300px;
+
+  public function toggle-state() {
+    animation-start = animation-tick();
+    old-island = is-island;
+
+    state = OsdGlobal.is-notch
+      ? OsdState.NotchOpen
+      : OsdGlobal.is-notch-open
+      ? OsdState.Island
+      : OsdState.Notch;
+  }
+
+  pos := Rectangle {
+    y: 0px;
+
+    path := Path {
+      width: 100px;
+      height: 35px;
+
+      viewbox-y: -10;
+      viewbox-width: 100;
+      viewbox-height: 20;
+
+      fill: OsdGlobal.background;
+
+      animate fill { duration: root.duration / 5; }
+
+      MoveTo {
+        x: 0;
+        y: -path-height;
+      }
+
+      MoveTo {
+        x: old-island && is-island 
+          ? 0
+          : !old-island && is-island 
+          ? -path-height + animation-frame * path-height
+          : old-island && !is-island 
+          ? animation-frame * -path-height
+          : -path-height; //-path-height;
+        y: 0;
+      }
+
+      CubicTo {
+        x: 0;
+        y: path-height;
+
+        control-1-x: old-island && is-island 
+          ? -path-curve
+          : !old-island && is-island 
+          ? animation-frame * -path-curve
+          : old-island && !is-island 
+          ? -path-curve + animation-frame * path-curve
+          : 0;
+        control-1-y: 0;
+
+        control-2-x: -path-curve;
+        control-2-y: path-height;
+      }
+
+      LineTo {
+        x: 100;
+        y: root.path-height;
+      }
+
+      CubicTo {
+        x: old-island && is-island 
+          ? 100
+          : !old-island && is-island 
+          ? 100 + path-height + animation-frame * -path-height
+          : old-island && !is-island 
+          ? 100 + animation-frame * path-height
+          : 100 + path-height;
+        y: 0;
+
+        control-1-x: 100 + path-curve;
+        control-1-y: root.path-height;
+
+        control-2-x: old-island && is-island 
+          ? 100 + path-curve
+          : !old-island && is-island 
+          ? 100 + animation-frame * path-curve
+          : old-island && !is-island 
+          ? 100 + path-curve + animation-frame * -path-curve
+          : 100;
+        control-2-y: 0;
+      }
+
+      Close {}
+    }
+
+    Rectangle {
+      x: render-x;
+      y: path.y + path.height / 2;
+
+      width: render-width;
+      height: render-height;
+
+      clip: true;
+      // background: #F003;
+
+      @children
+    }
+  }
+}
+

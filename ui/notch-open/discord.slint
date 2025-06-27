@@ -1,0 +1,132 @@
+import {NotchOpenWidget} from "base.slint";
+import {OsdGlobal} from "../osd/global.slint";
+import {OsdConfig, OsdState} from "../osd/state.slint";
+import {OsdClockManager} from "../notch/Clock.slint";
+
+export global OsdDiscordManager {
+  out property <bool> shown: OsdGlobal.widget == config.name;
+  out property <OsdConfig> config: {
+    name: "discord",
+    state: OsdState.NotchOpen,
+    background: #5865F2,
+    foreground: #E0E3FF,
+  };
+
+  public function show() {
+    OsdGlobal.set-widget(config);
+  }
+}
+
+component OsdDiscordInner inherits NotchOpenWidget {
+  Image {
+    x: 20px;
+    source: @image-url("../assets/Discord-Symbol-White.svg");
+    width: 24px;
+  }
+
+  Timer {
+    interval: 1s;
+    triggered => {
+      details.opacity = 0;
+      body.opacity = 1;
+      body-fade.opacity = 1;
+      timer-body.running = true;
+      self.running = false;
+    }
+  }
+
+  details := VerticalLayout {
+    x: 70px;
+    alignment: center;
+    spacing: 2px;
+
+    animate opacity {
+      duration: 200ms;
+    }
+
+    Text {
+      text: "Discord Channel";
+      color: OsdGlobal.foreground;
+      font-weight: 600;
+    }
+
+    Text {
+      text: "@sergioribera";
+      color: OsdGlobal.foreground;
+      font-weight: 600;
+    }
+  }
+
+  body := Rectangle {
+    opacity: 0;
+
+    animate opacity {
+      duration: 200ms;
+    }
+
+    x: 70px;
+    y: 2px;
+    height: 53px;
+    clip: true;
+
+    txt-body := Text {
+      x: 0px;
+      y: 10px;
+      width: 150px;
+      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. parangacutimiricuaro123412341234a. xd";
+      color: OsdGlobal.foreground;
+      wrap: TextWrap.word-wrap;
+      font-weight: 600;
+
+      animate y {
+        duration: 10s;
+        easing: linear;
+      }
+    }
+
+    timer-body := Timer {
+      interval: 2s;
+      running: false;
+      triggered => {
+        txt-body.y = -txt-body.height + 5px;
+        timer-body-2.running = true;
+        self.running = false;
+      }
+    }
+
+    timer-body-2 := Timer {
+      interval: 10s;
+      running: false;
+      triggered => {
+        OsdGlobal.set-widget(OsdClockManager.config);
+        self.running = false;
+      }
+    }
+  }
+
+  body-fade := Rectangle {
+    opacity: 0;
+
+    x: 70px;
+    y: 2px;
+    width: 150px;
+    height: 15px;
+    background: @linear-gradient(0deg, transparent 0%, OsdGlobal.background 100%);
+  }
+
+  Rectangle {
+    opacity: body-fade.opacity;
+    x: 70px;
+    y: 40px;
+    width: 150px;
+    height: 15px;
+    background: @linear-gradient(180deg, transparent 0%, OsdGlobal.background 100%);
+  }
+}
+
+export component OsdDiscord inherits NotchOpenWidget {
+  if OsdDiscordManager.shown: OsdDiscordInner {
+    x: 0px;
+    y: 0px;
+  }
+}

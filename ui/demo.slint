@@ -1,0 +1,32 @@
+import {OsdManager} from "osd/manager.slint";
+import {OsdConfig} from "osd/state.slint";
+
+export component DemoButton inherits Rectangle {
+  in property <string> text;
+  in property <OsdConfig> config;
+
+  width: txt.width + 30px;
+  height: txt.height + 20px;
+
+  border-radius: 12px;
+  border-color: config.foreground;
+  border-width: 1px;
+  background: ta.has-hover 
+    ? config.background.to-hsv().value > 0.5 
+    ? config.background.mix(#888, 0.85).darker(0.5)
+    : config.background.mix(#888, 0.85).brighter(0.5) 
+    : config.background;
+
+  txt := Text {
+    text: root.text;
+    color: config.foreground;
+  }
+
+  ta := TouchArea {
+    mouse-cursor: pointer;
+    clicked => {
+      OsdManager.set-widget(config.name);
+    }
+  }
+}
+

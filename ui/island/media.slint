@@ -1,0 +1,90 @@
+import {IslandWidget} from "base.slint";
+import {OsdGlobal} from "../osd/global.slint";
+import {OsdConfig, OsdState} from "../osd/state.slint";
+import {OsdClockManager} from "../notch/Clock.slint";
+
+export global OsdMediaManager {
+  out property <bool> shown: OsdGlobal.widget == config.name;
+  out property <OsdConfig> config: {
+    name: "media",
+    state: OsdState.Island,
+    background: #000,
+    foreground: #FFF,
+  };
+
+  public function show() {
+    OsdGlobal.set-widget(config);
+  }
+}
+
+component OsdMediaInner inherits IslandWidget {
+  Rectangle {
+    x: 10px;
+    y: -10px;
+
+    width: 90px;
+    height: 90px;
+    border-radius: 70px;
+
+    clip: true;
+
+    Image {
+      source: @image-url("../assets/SongAlbum.jpg");
+      width: parent.width;
+      height: parent.height;
+      image-fit: ImageFit.cover;
+    }
+  }
+
+  Text {
+    x: 120px;
+    y: 0px;
+    text: "Song name";
+    font-size: 16px;
+    font-weight: 600;
+    color: OsdGlobal.foreground;
+  }
+
+  Rectangle {
+    x: 120px;
+    y: 45px;
+
+    width: 250px;
+    height: 2px;
+    border-radius: 2px;
+
+    background: OsdGlobal.foreground;
+  }
+
+  Rectangle {
+    x: 120px;
+    y: 45px;
+
+    width: 150px;
+    height: 2px;
+    border-radius: 2px;
+
+    background: #F00;
+  }
+
+  Rectangle {
+    x: 120px + 150px - 2px;
+    y: 45px - 2px;
+
+    width: 5px;
+    height: 5px;
+    border-radius: 5px;
+
+    background: #F00;
+    border-color: #FFF;
+    border-width: 1px;
+  }
+}
+
+export component OsdMedia inherits IslandWidget {
+  if OsdMediaManager.shown: OsdMediaInner {
+    x: -10px;
+    y: 15px;
+  }
+}
+

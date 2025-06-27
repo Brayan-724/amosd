@@ -1,0 +1,12 @@
+export enum OsdState {
+  Notch,
+  NotchOpen,
+  Island,
+}
+
+export struct OsdConfig {
+  name: string,
+  state: OsdState,
+  background: brush,
+  foreground: brush,
+}

@@ -1,0 +1,49 @@
+import { Osd } from "osd.slint";
+import { OsdClock } from "notch.slint";
+import { OsdDiscord } from "notch-open.slint";
+import { DemoButton } from "demo.slint";
+import { OsdDiscordManager } from "notch-open/discord.slint";
+import { OsdClockManager } from "notch/Clock.slint";
+import { OsdMediaManager, OsdMedia } from "island/media.slint";
+
+component Demo inherits Rectangle {
+  width: 450px;
+  height: 250px;
+
+  background: transparent;
+
+  dis := Osd {
+    y: 0px;
+
+    OsdClock {}
+    OsdDiscord {}
+    OsdMedia {}
+  }
+
+  HorizontalLayout {
+    alignment: center;
+    spacing: 25px;
+    y: 200px;
+
+    DemoButton {
+      text: "Clock";
+      config: OsdClockManager.config;
+    }
+
+    DemoButton {
+      text: "Discord";
+      config: OsdDiscordManager.config;
+    }
+
+    DemoButton {
+      text: "Media";
+      config: OsdMediaManager.config;
+    }
+  }
+}
+
+export component MainWindow inherits Window {
+    background: transparent;
+
+    Demo {}
+}

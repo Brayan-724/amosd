@@ -1,0 +1,32 @@
+export component NotchWidget {
+  in property <bool> shown: false;
+
+  states [
+      hidden when !root.shown: {
+        y: -self.height;
+        opacity: 0;
+
+        in {
+          animate y {
+            duration: 100ms;
+          }
+          animate opacity {
+            duration: 300ms;
+          }
+        }
+
+        out {
+          animate y {
+            duration: 200ms;
+          }
+
+          animate opacity {
+            duration: 300ms;
+          }
+        }
+      }
+  ]
+
+  @children
+}
+

@@ -1,0 +1,26 @@
+import { NotchWidget } from "./base.slint";
+import { OsdState, OsdConfig } from "../osd/state.slint";
+import { OsdGlobal } from "../osd/global.slint";
+
+export global OsdClockManager {
+  out property <bool> shown: OsdGlobal.widget == config.name;
+  out property <OsdConfig> config: {
+    name: "clock",
+    state: OsdState.Notch,
+    background: #000,
+    foreground: #FFF,
+  };
+
+  public function show() {
+    OsdGlobal.set-widget(config);
+  }
+}
+
+export component OsdClock inherits NotchWidget {
+  shown: OsdClockManager.shown;
+
+  Text {
+    text: "11:00";
+  }
+}
+

@@ -1,0 +1,17 @@
+import { OsdGlobal } from "global.slint";
+import { OsdClockManager } from "../notch/Clock.slint";
+import { OsdDiscordManager } from "../notch-open/discord.slint";
+import { OsdMediaManager } from "../island/media.slint";
+
+export global OsdManager {
+  public function set-widget(new-widget: string) {
+    if (new-widget == OsdClockManager.config.name) {
+      OsdClockManager.show();
+    } else if (new-widget == OsdDiscordManager.config.name) {
+      OsdDiscordManager.show();
+    } else if (new-widget == OsdMediaManager.config.name) {
+      OsdMediaManager.show();
+    } else {
+    }
+  }
+}
