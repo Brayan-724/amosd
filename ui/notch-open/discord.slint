@@ -26,6 +26,7 @@ component OsdDiscordInner inherits NotchOpenWidget {
 
   Timer {
     interval: 1s;
+    running: true;
     triggered => {
       details.opacity = 0;
       body.opacity = 1;
@@ -35,25 +36,33 @@ component OsdDiscordInner inherits NotchOpenWidget {
     }
   }
 
-  details := VerticalLayout {
-    x: 70px;
-    alignment: center;
-    spacing: 2px;
+  Rectangle {
+    x: ((root.width - self.width - 20px) + (70px)) / 2;
+    y: root.height / 2 - self.height / 2;
 
-    animate opacity {
-      duration: 200ms;
-    }
+    width: 160px;
 
-    Text {
-      text: "Discord Channel";
-      color: OsdGlobal.foreground;
-      font-weight: 600;
-    }
+    details := VerticalLayout {
+      x: 0px;
 
-    Text {
-      text: "@sergioribera";
-      color: OsdGlobal.foreground;
-      font-weight: 600;
+      alignment: center;
+      spacing: 2px;
+
+      animate opacity {
+        duration: 200ms;
+      }
+
+      Text {
+        text: "Discord Channel";
+        color: OsdGlobal.foreground;
+        font-weight: 600;
+      }
+
+      Text {
+        text: "@sergioribera";
+        color: OsdGlobal.foreground;
+        font-weight: 600;
+      }
     }
   }
 
@@ -125,8 +134,5 @@ component OsdDiscordInner inherits NotchOpenWidget {
 }
 
 export component OsdDiscord inherits NotchOpenWidget {
-  if OsdDiscordManager.shown: OsdDiscordInner {
-    x: 0px;
-    y: 0px;
-  }
+  if OsdDiscordManager.shown: OsdDiscordInner {}
 }
