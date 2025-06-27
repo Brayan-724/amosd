@@ -1,0 +1,16 @@
+import {NotchOpenWidget} from "base.slint";
+import {OsdGlobal} from "../osd/global.slint";
+
+export component NotificationWidget inherits NotchOpenWidget {
+  in property <image> icon;
+
+  Image {
+    x: max(0, root.width / root.min-width) * 50px - 30px;
+    y: root.height / 2 - self.height / 2;
+    source: icon;
+    width: 24px;
+    colorize: OsdGlobal.foreground;
+  }
+
+  @children
+}

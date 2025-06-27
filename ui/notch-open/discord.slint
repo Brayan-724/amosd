@@ -1,4 +1,5 @@
 import {NotchOpenWidget} from "base.slint";
+import {NotificationWidget} from "notification.slint";
 import {OsdGlobal} from "../osd/global.slint";
 import {OsdConfig, OsdState} from "../osd/state.slint";
 import {OsdClockManager} from "../notch/Clock.slint";
@@ -17,12 +18,8 @@ export global OsdDiscordManager {
   }
 }
 
-component OsdDiscordInner inherits NotchOpenWidget {
-  Image {
-    x: 20px;
-    source: @image-url("../assets/Discord-Symbol-White.svg");
-    width: 24px;
-  }
+component OsdDiscordInner inherits NotificationWidget {
+  icon: @image-url("../assets/Discord-Symbol-White.svg");
 
   Timer {
     interval: 1s;
