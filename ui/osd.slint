@@ -27,7 +27,12 @@ export component Osd {
   property <float> path-curve: path-height * (3 / 4);
 
   private property <duration> animation-start: OsdGlobal.animation-start;
-  private property <float> animation-frame: min(animation-tick() - animation-start, self.duration / 2) / (self.duration / 2);
+  private property <duration> animation-max: old-island && !is-island
+    ? duration / 2
+    : !old-island && is-island
+    ? duration / 6
+    : 1ms;
+  private property <float> animation-frame: min(animation-tick() - animation-start, animation-max) / animation-max;
 
   private property <bool> old-island: OsdGlobal.old-island;
   private property <bool> is-island: OsdGlobal.is-island;
@@ -220,4 +225,3 @@ export component Osd {
     }
   }
 }
-
