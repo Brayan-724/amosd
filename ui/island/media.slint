@@ -8,8 +8,9 @@ export global OsdMediaManager {
   out property <OsdConfig> config: {
     name: "media",
     state: OsdState.Island,
-    background: #000,
-    foreground: #FFF,
+    background: #F1F0ECff,
+    foreground: #242785ff,
+    accent: #80B0F0ff,
   };
 
   public function show() {
@@ -87,4 +88,3 @@ export component OsdMedia inherits IslandWidget {
     y: 15px;
   }
 }
-
