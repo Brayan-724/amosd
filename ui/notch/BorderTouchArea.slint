@@ -1,0 +1,36 @@
+export component BorderTouchArea {
+  in-out property <bool> enabled;
+
+  callback collided();
+
+  function handle-event(e: PointerEvent) {
+    if (e.kind == PointerEventKind.move) {
+      collided()
+    }
+  }
+
+  TouchArea {
+    y: root.height - 5px;
+    height: 5px;
+
+    enabled: root.enabled;
+    pointer-event(e) => {handle-event(e)}
+  }
+
+  TouchArea {
+    x: 0px;
+    width: 5px;
+
+    enabled: root.enabled;
+    pointer-event(e) => {handle-event(e)}
+  }
+
+  TouchArea {
+    x: root.width - 5px;
+    width: 5px;
+
+    enabled: root.enabled;
+    pointer-event(e) => {handle-event(e)}
+  }
+}
+

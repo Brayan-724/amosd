@@ -1,6 +1,9 @@
 import { NotchWidget } from "./base.slint";
 import { OsdState, OsdConfig } from "../osd/state.slint";
 import { OsdGlobal } from "../osd/global.slint";
+import { MinimalNotch } from "Minimal.slint";
+import {BorderTouchArea} from "BorderTouchArea.slint";
+import { CompleteNotch } from "Complete.slint";
 
 export global OsdClockManager {
   out property <bool> shown: OsdGlobal.widget == config.name;
@@ -20,8 +23,81 @@ export global OsdClockManager {
 export component OsdClock inherits NotchWidget {
   shown: OsdClockManager.shown;
 
+  timer-outer := Timer {
+    interval: 50ms;
+    running: false;
+    triggered => {
+      self.running = false;
+      if (OsdGlobal.is-notch) {
+        ta-inner.enabled = true;
+      } else {
+        ta-outer.enabled = true;
+      }
+    }
+  }
+
+  function handle-ta(new-state: OsdState) {
+    OsdGlobal.set-state(new-state);
+    ta-inner.enabled = false;
+    ta-outer.enabled = false;
+    timer-outer.running = true;
+  }
+
+  ta-outer := BorderTouchArea {
+    width: root.width;
+    height: root.height;
+
+    enabled: false;
+    collided => {handle-ta(OsdState.Notch)}
+  }
+
+  ta-inner := TouchArea {
+    pointer-event(e) => {
+      if (e.kind == PointerEventKind.move) {
+        handle-ta(OsdState.NotchOpen)
+      }
+    }
+  }
+
+  states [
+      minimal when OsdGlobal.is-notch: {
+        minimal.opacity: 1;
+        complete.opacity: 0;
+      }
+      complete when OsdGlobal.is-notch-open: {
+        minimal.opacity: 0;
+        complete.opacity: 1;
+      }
+  ]
+
+
   Text {
+    y: 2.5px;
     text: "11:00";
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  minimal := MinimalNotch {
+    x: 0px;
+    y: 0px;
+    width: root.width;
+    height: root.height;
+
+    animate opacity {
+      duration: 200ms;
+    }
+  }
+
+  complete := CompleteNotch {
+    x: 0px;
+    y: 0px;
+    width: root.width;
+    height: root.height;
+
+    animate opacity {
+      duration: 200ms;
+    }
   }
 }
 

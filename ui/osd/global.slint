@@ -2,11 +2,11 @@ import { OsdState, OsdConfig } from "./state.slint";
 
 export global OsdGlobal {
   in-out property <OsdConfig> config: {
-    name: "media",
+    name: "clock",
     background: #000,
     foreground: #FFF,
     accent: #888,
-    state: OsdState.Island,
+    state: OsdState.Notch,
   };
 
   out property <brush> background: config.background;

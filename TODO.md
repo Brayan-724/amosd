@@ -1,0 +1,10 @@
+- Toolbox (8 x 2 grid)
+    - Music / Soundboard
+    - WIFI
+    - Bluetooth
+    - Silence Mode
+    - System tray
+    - Brightness
+- [ ] listen if camera is used
+    - `fuser /dev/videoX`
+    - NIX: `nixpkgs#psmisc`

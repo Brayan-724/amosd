@@ -1,0 +1,47 @@
+import { OsdGlobal } from "../osd/global.slint";
+import { MusicIcon } from "music-icon.slint";
+
+export component CompleteNotch {
+  width: 300px;
+  height: 100px;
+
+  VerticalLayout {
+    x: 7px;
+    y: 19px;
+    width: root.width - self.x * 2;
+    height: root.height * (3 / 4) - 8px;
+
+    spacing: 5px;
+
+    HorizontalLayout {
+      alignment: space-around;
+
+      MusicIcon {
+        width: self.height;
+      }
+      Rectangle {background: #F003; width: self.height;}
+      Rectangle {background: #F003; width: self.height;}
+      Rectangle {background: #F003; width: self.height;}
+
+      Rectangle {background: #F003; width: self.height;}
+      Rectangle {background: #F003; width: self.height;}
+      Rectangle {background: #F003; width: self.height;}
+      Rectangle {background: #F003; width: self.height;}
+    }
+
+    HorizontalLayout {
+      alignment: space-around;
+
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+      Rectangle {background: #0F03; width: self.height;}
+    }
+  }
+}
+

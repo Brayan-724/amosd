@@ -1,6 +1,11 @@
 export component NotchWidget {
   in property <bool> shown: false;
 
+  min-width: 103px;
+  min-height: 20px;
+  preferred-width: 100%;
+  preferred-height: 100%;
+
   states [
       hidden when !root.shown: {
         y: -self.height;

@@ -1,0 +1,132 @@
+export component MusicIcon inherits Rectangle {
+
+  in property <bool> as-equalizer: true;
+
+  Path {
+    x: 0px;
+    y: 0px;
+
+    width: root.width;
+    height: root.height;
+
+    fill: #FFF;
+    stroke-width: 5px;
+
+    viewbox-width: 100;
+    viewbox-height: 100;
+
+    property <float> fig-padding-x: 5;
+    property <float> fig-padding-y: 15;
+    property <float> fig-spacing: 5;
+
+    property <float> fig-width: (self.viewbox-width - fig-padding-x * 2 - fig-spacing * 2) / 3;
+    property <float> fig-height: 80;
+
+    pure function pos-x(idx: int, start: bool) -> float {
+        if (start) {
+          return fig-padding-x + fig-spacing * idx + fig-width * idx; 
+        } else {
+          return fig-padding-x + fig-spacing * idx + fig-width * idx + fig-width; 
+        }
+    }
+
+    pure function pos-y-normalized(idx: int, start: bool, frame: float) -> float {
+        if (start) {
+          return fig-padding-y + (fig-height * frame);
+        } else {
+          if (root.as-equalizer) {
+          return fig-padding-y + (fig-height * frame) + (fig-height - fig-height * frame);
+          } else {
+          return fig-padding-y + fig-height - (fig-height * frame);
+          }
+        }
+    }
+
+    pure function pos-y(idx: int, start: bool, delay: duration) -> float {
+      if (root.as-equalizer) {
+        return pos-y-normalized(idx, start, sin(mod(animation-tick() + delay, 1s) / 1s * 180deg));
+      } else {
+        return pos-y-normalized(idx, start, mod(animation-tick() + delay, 0.75s) / 0.75s);
+      }
+    }
+
+    property <duration> fig-1-delay: 000ms;
+    property <duration> fig-2-delay: 400ms;
+    property <duration> fig-3-delay: 200ms;
+
+    MoveTo {
+      x: pos-x(0, true);
+      y: pos-y(0, true, fig-1-delay);
+    }
+
+    LineTo {
+      x: pos-x(0, false);
+      y: pos-y(0, true, fig-1-delay);
+    }
+
+    LineTo {
+      x: pos-x(0, false);
+      y: pos-y(0, false, fig-1-delay);
+    }
+
+    LineTo {
+      x: pos-x(0, true);
+      y: pos-y(0, false, fig-1-delay);
+    }
+
+    LineTo {
+      x: pos-x(0, true);
+      y: pos-y(0, true, fig-1-delay);
+    }
+
+    MoveTo {
+      x: pos-x(1, true);
+      y: pos-y(1, true, fig-2-delay);
+    }
+
+    LineTo {
+      x: pos-x(1, false);
+      y: pos-y(1, true, fig-2-delay);
+    }
+
+    LineTo {
+      x: pos-x(1, false);
+      y: pos-y(1, false, fig-2-delay);
+    }
+
+    LineTo {
+      x: pos-x(1, true);
+      y: pos-y(1, false, fig-2-delay);
+    }
+
+    LineTo {
+      x: pos-x(1, true);
+      y: pos-y(1, true, fig-2-delay);
+    }
+
+    MoveTo {
+      x: pos-x(2, true);
+      y: pos-y(2, true, fig-3-delay);
+    }
+
+    LineTo {
+      x: pos-x(2, false);
+      y: pos-y(2, true, fig-3-delay);
+    }
+
+    LineTo {
+      x: pos-x(2, false);
+      y: pos-y(2, false, fig-3-delay);
+    }
+
+    LineTo {
+      x: pos-x(2, true);
+      y: pos-y(2, false, fig-3-delay);
+    }
+
+    LineTo {
+      x: pos-x(2, true);
+      y: pos-y(2, true, fig-3-delay);
+    }
+  }
+}
