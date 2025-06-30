@@ -18,5 +18,3 @@ Esta es una aplicación de escritorio desarrollada en Rust usando [Slint](https:
 ## 📸 Vista previa
 
 ![temporal](./.github/assets/output.gif)
-
-![temporal-2](<./.github/assets/output%20(1).gif>)
