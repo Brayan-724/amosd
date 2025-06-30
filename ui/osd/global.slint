@@ -29,4 +29,10 @@ export global OsdGlobal {
 
     config = new-config;
   }
+
+  public function set-state(new-state: OsdState) {
+    animation-start = animation-tick();
+    old-island = is-island;
+    config.state = new-state;
+  }
 }
