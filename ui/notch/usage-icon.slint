@@ -1,0 +1,91 @@
+import { OsdGlobal } from "../osd/global.slint";
+export component UsageIcon inherits Rectangle {
+
+    in property <string> text: "Example";
+    in property <float> progress: mod(animation-tick(), 1s) / 1s;
+
+    Path {
+        x: 0px;
+        y: 0px;
+
+        width: root.width;
+        height: root.height;
+
+        fill: #FFF;
+        stroke-width: 5px;
+
+        viewbox-width: 100;
+        viewbox-height: 100;
+
+        MoveTo {
+            x: 50;
+            y: 50;
+        }
+
+        LineTo {
+            x: 50;
+            y: 0;
+        }
+
+        ArcTo {
+            radius-x: 50;
+            radius-y: 50;
+            x: 50 - cos(progress * 360deg + 90deg) * 50;
+            y: 50 - sin(progress * 360deg + 90deg) * 50;
+            sweep: progress > 0;
+            large-arc: progress > 0.5;
+        }
+    }
+
+    Path {
+        x: root.width * (0.25 / 2);
+        y: root.height * (0.25 / 2);
+
+        width: root.width * 0.75;
+        height: root.height * 0.75;
+
+        fill: OsdGlobal.background;
+        stroke-width: 6px;
+
+        viewbox-width: 100;
+        viewbox-height: 100;
+
+        MoveTo {
+            x: 50;
+            y: 50;
+        }
+
+        LineTo {
+            x: 50;
+            y: 0;
+        }
+
+        ArcTo {
+            radius-x: 50;
+            radius-y: 50;
+            x: 50 - cos(progress * 360deg + 90deg) * 50;
+            y: 50 - sin(progress * 360deg + 90deg) * 50;
+            sweep: progress > 0;
+            large-arc: progress > 0.5;
+        }
+    }
+
+    ta := TouchArea {
+        width: root.width;
+        height: root.height;
+    }
+
+    if ta.has-hover: Rectangle {
+        y: -15px;
+
+        background: OsdGlobal.accent;
+
+        width: t.width + 5px;
+        height: t.height;
+
+        t := Text {
+            text: text;
+            font-size: 10px;
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { OsdGlobal } from "../osd/global.slint";
 import { MusicIcon } from "music-icon.slint";
+import { UsageIcon } from "usage-icon.slint";
 
 export component CompleteNotch {
   width: 300px;
@@ -19,9 +20,21 @@ export component CompleteNotch {
       MusicIcon {
         width: self.height;
       }
-      Rectangle {background: #F003; width: self.height;}
-      Rectangle {background: #F003; width: self.height;}
-      Rectangle {background: #F003; width: self.height;}
+      UsageIcon {
+        width: self.height;
+        text: "CPU usage";
+        progress: mod(animation-tick() + 250ms, 1s) / 1s;
+      }
+      UsageIcon {
+        width: self.height;
+        text: "RAM usage";
+        progress: mod(animation-tick() + 500ms, 1s) / 1s;
+      }
+      UsageIcon {
+        width: self.height;
+        text: "Disk usage";
+        progress: mod(animation-tick() + 750ms, 1s) / 1s;
+      }
 
       Rectangle {background: #F003; width: self.height;}
       Rectangle {background: #F003; width: self.height;}
