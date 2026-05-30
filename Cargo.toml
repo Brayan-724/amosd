@@ -1,10 +1,11 @@
+[workspace]
+members = ["crates/*"]
+
 [package]
 name = "amosd"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-slint = { version = "1.16.1", default-features = false, features = ["accessibility", "backend-winit-wayland", "compat-1-2", "renderer-winit-skia"] }
+amosd-ui.path = "./crates/ui"
 
-[build-dependencies]
-slint-build = "1.16.1"

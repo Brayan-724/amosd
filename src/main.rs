@@ -1,6 +1,5 @@
 use std::error::Error;
-
-slint::include_modules!();
+use amosd_ui::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let ui = MainWindow::new()?;
