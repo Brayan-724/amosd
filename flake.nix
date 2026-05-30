@@ -7,6 +7,9 @@
     lib = pkgs.lib;
     buildInputs = with pkgs; [
       slint-lsp
+      slint-viewer
+
+      pkgs.stdenv.cc.cc.lib
 
       pkg-config
       openssl
@@ -21,7 +24,7 @@
       xorg.libXcursor
       xorg.libXi
       libxkbcommon
-       gtk3
+      gtk3
     ];
   in {
     devShells.${system}.default = pkgs.mkShell {
