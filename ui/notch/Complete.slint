@@ -1,4 +1,5 @@
 import { OsdGlobal } from "../osd/global.slint";
+import { BatteryIcon } from "battery-icon.slint";
 import { MusicIcon } from "music-icon.slint";
 import { UsageIcon } from "usage-icon.slint";
 
@@ -35,8 +36,12 @@ export component CompleteNotch {
         text: "Disk usage";
         progress: mod(animation-tick() + 750ms, 1s) / 1s;
       }
+      UsageIcon {
+        width: self.height;
+        text: "Batery \{self.percentage}%";
+        progress: mod(animation-tick() + 750ms, 5s) / 5s;
+      }
 
-      Rectangle {background: #F003; width: self.height;}
       Rectangle {background: #F003; width: self.height;}
       Rectangle {background: #F003; width: self.height;}
       Rectangle {background: #F003; width: self.height;}

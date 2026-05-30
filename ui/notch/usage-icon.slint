@@ -3,6 +3,7 @@ export component UsageIcon inherits Rectangle {
 
     in property <string> text: "Example";
     in property <float> progress: mod(animation-tick(), 1s) / 1s;
+    out property <int> percentage: round(progress * 100);
 
     Path {
         x: 0px;
@@ -12,7 +13,6 @@ export component UsageIcon inherits Rectangle {
         height: root.height;
 
         fill: #FFF;
-        stroke-width: 5px;
 
         viewbox-width: 100;
         viewbox-height: 100;
